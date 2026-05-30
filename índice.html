@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>David Maximiliano Pablo Cuy — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;1,300&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0a0c0f;
+      --bg2: #0f1318;
+      --bg3: #141920;
+      --card: #161c24;
+      --border: #1e2a36;
+      --accent: #4af0c4;
+      --accent2: #f0c44a;
+      --accent3: #4a9ef0;
+      --text: #e8edf2;
+      --muted: #6b7f94;
+      --muted2: #3a4d5e;
+      --green: #5af0a0;
+      --tag-bg: #1a2535;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      line-height: 1.7;
+      overflow-x: hidden;
+      cursor: default;
+    }
+
+    /* ── NOISE OVERLAY ── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 9999; opacity: .4;
+    }
+
+    /* ── GRID LINES BG ── */
+    .grid-bg {
+      position: fixed; inset: 0; pointer-events: none; z-index: 0;
+      background-image:
+        linear-gradient(rgba(74,240,196,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,240,196,.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1.2rem 3rem;
+      background: rgba(10,12,15,.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo {
+      font-family: 'Syne', sans-serif;
+      font-weight: 800; font-size: 1.1rem;
+      color: var(--accent); letter-spacing: -.02em;
+    }
+    .nav-logo span { color: var(--text); }
+    nav ul { list-style: none; display: flex; gap: 2rem; }
+    nav ul a {
+      font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none;
+      transition: color .2s;
+    }
+    nav ul a:hover { color: var(--accent); }
+
+    /* ── MAIN WRAPPER ── */
+    main { position: relative; z-index: 1; }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 8rem 3rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-glow {
+      position: absolute; top: -200px; right: -200px;
+      width: 700px; height: 700px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,240,196,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-glow2 {
+      position: absolute; bottom: -300px; left: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,158,240,.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: .5rem;
+      background: var(--tag-bg); border: 1px solid var(--border);
+      border-radius: 100px; padding: .3rem 1rem;
+      font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 2rem;
+      animation: fadeUp .6s ease both;
+    }
+    .hero-tag::before {
+      content: ''; width: 6px; height: 6px; border-radius: 50%;
+      background: var(--accent); animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .4; transform: scale(.7); }
+    }
+    h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 800; line-height: .95;
+      letter-spacing: -.04em;
+      animation: fadeUp .6s .1s ease both;
+    }
+    h1 em {
+      font-style: normal;
+      color: transparent;
+      -webkit-text-stroke: 1px var(--accent);
+    }
+    .hero-sub {
+      margin-top: 1.5rem;
+      font-family: 'Instrument Serif', serif;
+      font-style: italic; font-size: 1.25rem;
+      color: var(--muted); max-width: 480px;
+      animation: fadeUp .6s .2s ease both;
+    }
+    .hero-badges {
+      display: flex; flex-wrap: wrap; gap: .6rem;
+      margin-top: 2rem;
+      animation: fadeUp .6s .3s ease both;
+    }
+    .badge {
+      background: var(--tag-bg); border: 1px solid var(--border);
+      border-radius: 6px; padding: .3rem .8rem;
+      font-size: .72rem; color: var(--muted);
+      letter-spacing: .06em;
+    }
+    .badge.highlight { color: var(--accent2); border-color: rgba(240,196,74,.25); background: rgba(240,196,74,.05); }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: .5rem;
+      font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--muted2); animation: fadeUp .6s .5s ease both;
+    }
+    .hero-scroll::after {
+      content: '';
+      width: 1px; height: 50px;
+      background: linear-gradient(var(--accent), transparent);
+      animation: scrollLine 2s ease-in-out infinite;
+    }
+    @keyframes scrollLine {
+      0%,100% { opacity: .2; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.3); }
+    }
+
+    /* ── SECTIONS GENERAL ── */
+    section {
+      padding: 6rem 3rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .section-label {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .7rem; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 1.5rem;
+    }
+    .section-label::after {
+      content: ''; flex: 1; height: 1px;
+      background: linear-gradient(90deg, var(--border), transparent);
+    }
+    h2 {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800; letter-spacing: -.03em;
+      margin-bottom: 3rem; line-height: 1.1;
+    }
+    h2 span { color: var(--accent); }
+
+    /* ── ABOUT GRID ── */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+    .about-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .about-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    .about-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(74,240,196,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .about-card.wide { grid-column: 1 / -1; }
+    .about-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--accent); margin-bottom: 1rem;
+      letter-spacing: .05em;
+    }
+    .about-card p { color: var(--muted); font-size: .88rem; line-height: 1.8; }
+    .about-card p strong { color: var(--text); }
+
+    /* hobby tags */
+    .hobbies { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: .5rem; }
+    .hobby {
+      background: var(--tag-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: .25rem .75rem;
+      font-size: .72rem; color: var(--muted);
+      transition: all .2s;
+    }
+    .hobby:hover { background: rgba(74,240,196,.1); color: var(--accent); border-color: var(--accent); }
+
+    /* interest bars */
+    .interest-item { margin-bottom: 1.2rem; }
+    .interest-label {
+      display: flex; justify-content: space-between;
+      font-size: .75rem; margin-bottom: .4rem;
+      color: var(--muted);
+    }
+    .interest-label span:last-child { color: var(--accent); }
+    .bar-bg {
+      height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+    }
+    .bar-fill {
+      height: 100%; border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent3));
+      transform-origin: left;
+      animation: barGrow 1s ease both;
+    }
+    @keyframes barGrow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+    /* ── TIMELINE (Primer Semestre) ── */
+    .timeline { position: relative; padding-left: 2.5rem; }
+    .timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 1px; background: linear-gradient(var(--accent), var(--border), transparent);
+    }
+    .tl-item {
+      position: relative; margin-bottom: 3rem;
+      opacity: 0; animation: fadeUp .5s ease forwards;
+    }
+    .tl-item:nth-child(1) { animation-delay: .1s; }
+    .tl-item:nth-child(2) { animation-delay: .2s; }
+    .tl-item:nth-child(3) { animation-delay: .3s; }
+    .tl-item:nth-child(4) { animation-delay: .4s; }
+    .tl-item:nth-child(5) { animation-delay: .5s; }
+    .tl-dot {
+      position: absolute; left: -2.85rem; top: .3rem;
+      width: 12px; height: 12px; border-radius: 50%;
+      border: 2px solid var(--accent);
+      background: var(--bg);
+    }
+    .tl-dot.filled { background: var(--accent); }
+    .tl-category {
+      font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--accent2); margin-bottom: .4rem;
+    }
+    .tl-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem; font-weight: 700;
+      margin-bottom: .5rem; color: var(--text);
+    }
+    .tl-body { font-size: .85rem; color: var(--muted); line-height: 1.8; }
+    .tl-body strong { color: var(--text); }
+
+    /* ── LEARNINGS (Aprendizajes) ── */
+    .learnings-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+    .learning-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+      transition: border-color .3s, transform .3s;
+      position: relative; overflow: hidden;
+    }
+    .learning-card:hover {
+      border-color: var(--accent3);
+      transform: translateY(-4px);
+    }
+    .learning-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent3), var(--accent));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .learning-card:hover::after { transform: scaleX(1); }
+    .learning-num {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.4rem; font-weight: 800;
+      color: var(--muted2); line-height: 1;
+      background: var(--tag-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .2rem .6rem;
+      display: inline-block;
+      margin-bottom: .3rem;
+    }
+    .learning-topic {
+      font-size: .68rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--accent3);
+    }
+    .learning-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.2rem; font-weight: 700;
+    }
+    .learning-desc { font-size: .83rem; color: var(--muted); line-height: 1.8; }
+
+    /* code block */
+    .code-block {
+      background: #0d1117;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.2rem 1.5rem;
+      font-family: 'DM Mono', monospace;
+      font-size: .78rem; line-height: 1.8;
+      color: #cdd9e5;
+      overflow-x: auto;
+      position: relative;
+    }
+    .code-block::before {
+      content: '● ● ●';
+      display: block; margin-bottom: .8rem;
+      color: var(--muted2); font-size: .6rem; letter-spacing: .2em;
+    }
+    .kw { color: #f47067; }
+    .fn { color: #dcbdfb; }
+    .str { color: #96d0ff; }
+    .cm { color: #636e7b; font-style: italic; }
+    .num { color: #6cb6ff; }
+    .var { color: #adbac7; }
+
+    /* metacognition */
+    .meta-block {
+      background: rgba(74,158,240,.05);
+      border: 1px solid rgba(74,158,240,.2);
+      border-left: 3px solid var(--accent3);
+      border-radius: 0 10px 10px 0;
+      padding: 1rem 1.2rem;
+    }
+    .meta-label {
+      font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--accent3); margin-bottom: .5rem;
+    }
+    .meta-block p { font-size: .8rem; color: var(--muted); line-height: 1.7; }
+
+    /* skill meter */
+    .skill-meter { margin-top: .5rem; }
+    .skill-row {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .72rem; color: var(--muted); margin-bottom: .6rem;
+    }
+    .skill-name { width: 130px; flex-shrink: 0; }
+    .dots { display: flex; gap: 4px; }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border);
+    }
+    .dot.on { background: var(--accent); }
+
+    /* bloom badge */
+    .bloom-badge {
+      display: inline-flex; align-items: center; gap: .4rem;
+      background: rgba(240,196,74,.08);
+      border: 1px solid rgba(240,196,74,.25);
+      border-radius: 8px; padding: .25rem .75rem;
+      font-size: .68rem; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--accent2);
+    }
+
+    /* evidence placeholder */
+    .evidence-box {
+      background: var(--bg3);
+      border: 1px dashed var(--border);
+      border-radius: 10px;
+      padding: 1.5rem;
+      text-align: center;
+      font-size: .75rem; color: var(--muted2);
+    }
+    .evidence-box span { display: block; font-size: 1.5rem; margin-bottom: .4rem; }
+
+    /* ── CS CONCEPTION ── */
+    .cs-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+      margin-bottom: 1.5rem;
+    }
+    .cs-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+    .cs-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(74,240,196,.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .cs-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--accent); margin-bottom: 1rem;
+      letter-spacing: .05em;
+    }
+    .cs-card p { color: var(--muted); font-size: .88rem; line-height: 1.9; }
+    .cs-card p strong { color: var(--text); }
+
+    .cs-two-col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 1.5rem;
+    }
+
+    /* vision block */
+    .vision-block {
+      background: rgba(74,240,196,.05);
+      border: 1px solid rgba(74,240,196,.15);
+      border-left: 3px solid var(--accent);
+      border-radius: 0 12px 12px 0;
+      padding: 1.2rem 1.5rem;
+    }
+    .vision-label {
+      font-size: .65rem; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: .6rem;
+    }
+    .vision-block p { font-size: .83rem; color: var(--muted); line-height: 1.8; }
+    .vision-block p strong { color: var(--text); }
+
+    /* ── QUE ME LLEVO ── */
+    .takeaway-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+    .takeaway-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: border-color .3s, transform .3s;
+      position: relative; overflow: hidden;
+    }
+    .takeaway-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
+    .takeaway-card::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 2px;
+      background: linear-gradient(90deg, var(--accent2), var(--accent));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .takeaway-card:hover::after { transform: scaleX(1); }
+    .takeaway-icon { font-size: 2rem; line-height: 1; }
+    .takeaway-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 1.05rem; font-weight: 700; color: var(--text);
+    }
+    .takeaway-desc { font-size: .83rem; color: var(--muted); line-height: 1.8; }
+    .takeaway-desc strong { color: var(--text); }
+
+    /* ── REFLEXIÓN ── */
+    .reflex-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .reflex-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: border-color .3s, transform .3s;
+    }
+    .reflex-card:hover { transform: translateY(-3px); }
+    .reflex-card.bien { border-color: rgba(90,240,160,.2); }
+    .reflex-card.bien:hover { border-color: var(--green); }
+    .reflex-card.no-bien { border-color: rgba(240,100,80,.15); }
+    .reflex-card.no-bien:hover { border-color: #f06450; }
+    .reflex-card.aprendido { border-color: rgba(74,158,240,.2); }
+    .reflex-card.aprendido:hover { border-color: var(--accent3); }
+    .reflex-card.dudas { border-color: rgba(240,196,74,.2); }
+    .reflex-card.dudas:hover { border-color: var(--accent2); }
+    .reflex-icon { font-size: 1.8rem; margin-bottom: .8rem; }
+    .reflex-card h3 {
+      font-family: 'Syne', sans-serif;
+      font-size: .95rem; font-weight: 700;
+      margin-bottom: .8rem;
+    }
+    .reflex-card.bien h3 { color: var(--green); }
+    .reflex-card.no-bien h3 { color: #f06450; }
+    .reflex-card.aprendido h3 { color: var(--accent3); }
+    .reflex-card.dudas h3 { color: var(--accent2); }
+    .reflex-card p { font-size: .83rem; color: var(--muted); line-height: 1.8; }
+    .reflex-card p strong { color: var(--text); }
+
+    .closing-block {
+      margin-top: 3rem;
+      background: linear-gradient(135deg, rgba(74,240,196,.06), rgba(74,158,240,.04));
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 2.5rem;
+      text-align: center;
+    }
+    .closing-block p {
+      font-family: 'Instrument Serif', serif;
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto 1rem;
+      line-height: 1.9;
+    }
+    .closing-block p strong { color: var(--text); font-style: normal; }
+
+    /* ── SOCIAL LINKS ── */
+    .social-row {
+      display: flex; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap;
+    }
+    .social-btn {
+      display: flex; align-items: center; gap: .6rem;
+      background: var(--tag-bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: .6rem 1.2rem;
+      font-size: .78rem; color: var(--muted);
+      text-decoration: none;
+      transition: all .2s;
+    }
+    .social-btn:hover {
+      background: rgba(74,240,196,.08);
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: .72rem; color: var(--muted2);
+      max-width: 100%;
+    }
+    footer span { color: var(--muted); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      nav { padding: 1rem 1.5rem; }
+      nav ul { gap: 1rem; }
+      #hero, section { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-card.wide { grid-column: 1; }
+      .cs-two-col { grid-template-columns: 1fr; }
+      .reflex-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 2.8rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+
+    /* ── DIVIDER ── */
+    .full-divider {
+      width: 100%; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0;
+    }
+
+    .section-wrapper {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+  </style>
+</head>
+<body>
+
+<div class="grid-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <ul>
+    <li><a href="#about">Acerca de mí</a></li>
+    <li><a href="#semester">Primer Semestre</a></li>
+    <li><a href="#learnings">Aprendizajes</a></li>
+    <li><a href="#cs-conception">Ciencia de la Computación</a></li>
+    <li><a href="#takeaways">Qué me llevo</a></li>
+    <li><a href="#reflexion">Reflexión</a></li>
+  </ul>
+</nav>
+
+<main>
+
+  <!-- ══════════ HERO ══════════ -->
+  <section id="hero" style="max-width:100%; padding-top:8rem;">
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-tag">Portafolio Académico · 2026</div>
+    <h1>David<br><em>Maximiliano</em><br>Pablo Cuy</h1>
+    <p class="hero-sub">Estudiante de Ing. en Ciencias de la Computación<br>Universidad del Valle de Guatemala</p>
+    <div class="hero-badges">
+      <span class="badge">🇬🇹 Guatemala</span>
+      <span class="badge highlight">Primer Semestre</span>
+      <span class="badge">Ciberseguridad</span>
+      <span class="badge">IA</span>
+      <span class="badge">🏀 Baloncesto</span>
+      <span class="badge">Speedcubing</span>
+    </div>
+
+    <div style="display:flex; gap:.8rem; margin-top:2rem; flex-wrap:wrap; animation: fadeUp .6s .4s ease both;">
+      <a href="#semester" style="display:inline-flex; align-items:center; gap:.5rem; background: rgba(74,240,196,.12); border: 1px solid var(--accent); border-radius:10px; padding:.5rem 1.2rem; font-size:.78rem; color:var(--accent); text-decoration:none; font-family:'DM Mono',monospace; transition: all .2s;" onmouseover="this.style.background='rgba(74,240,196,.22)'" onmouseout="this.style.background='rgba(74,240,196,.12)'">
+        📖 Primer Semestre
+      </a>
+      <span style="display:inline-flex; align-items:center; gap:.5rem; background: var(--tag-bg); border: 1px solid var(--border); border-radius:10px; padding:.5rem 1.2rem; font-size:.78rem; color:var(--muted2); font-family:'DM Mono',monospace; cursor:not-allowed; opacity:.45;">🔒 Segundo Semestre</span>
+      <span style="display:inline-flex; align-items:center; gap:.5rem; background: var(--tag-bg); border: 1px solid var(--border); border-radius:10px; padding:.5rem 1.2rem; font-size:.78rem; color:var(--muted2); font-family:'DM Mono',monospace; cursor:not-allowed; opacity:.45;">🔒 Tercer Semestre</span>
+    </div>
+
+    <div class="hero-scroll">Scroll</div>
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- ══════════ ABOUT ══════════ -->
+  <section id="about">
+    <div class="section-label">01 — Acerca de mí</div>
+    <h2>Quién soy <span>&</span> qué me mueve</h2>
+
+    <div class="about-grid">
+
+      <div class="about-card">
+        <h3>// Perfil personal</h3>
+        <p>
+          Me llamo <strong>David Maximiliano Pablo Cuy</strong>, soy originario de la ciudad del paisaje <strong>"Sololá"</strong>, Guatemala. Actualmente estudio <strong>Ingeniería en Ciencias de la Computación y Tecnología de la Información</strong> en la Universidad del Valle de Guatemala.
+        </p>
+        <br>
+        <p>
+          Llegué a esta carrera sin un plan rígido, guiado por una intuición fuerte. Con el tiempo han despertado en mí el interés de aprender y centrarme en dos áreas: la <strong>Ciberseguridad</strong> y la <strong>Inteligencia Artificial</strong>.
+        </p>
+      </div>
+
+      <div class="about-card">
+        <h3>// Intereses y hobbies</h3>
+        <p style="margin-bottom:1rem;">Fuera de la universidad me mantengo activo en:</p>
+        <div class="hobbies">
+          <span class="hobby">🏀 Baloncesto</span>
+          <span class="hobby">🧊 Speedcubing</span>
+          <span class="hobby">📚 Lectura</span>
+          <span class="hobby">🏃 Atletismo</span>
+          <span class="hobby">🏋🏽 Gym</span>
+          <span class="hobby">🏔️ Senderismo</span>
+        </div>
+        <br>
+        <p>Desde que practico speedcubing presiento un aumento en mi retención de memoria, además que me ayuda a <strong>analizar sistemas algorítmicos</strong>. El atletismo y el gimnasio me brindan salud física, con la lectura siempre aprendo temas nuevos, y el senderismo me da perspectiva.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>// Áreas de interés</h3>
+        <div class="interest-item">
+          <div class="interest-label"><span>Programación</span><span>⬤⬤⬤⬤○</span></div>
+          <div class="bar-bg"><div class="bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="interest-item">
+          <div class="interest-label"><span>Ciberseguridad</span><span>⬤⬤⬤⬤○</span></div>
+          <div class="bar-bg"><div class="bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="interest-item">
+          <div class="interest-label"><span>Inteligencia Artificial</span><span>⬤⬤⬤⬤○</span></div>
+          <div class="bar-bg"><div class="bar-fill" style="width:80%"></div></div>
+        </div>
+        <div class="interest-item">
+          <div class="interest-label"><span>Design Thinking</span><span>⬤⬤⬤⬤○</span></div>
+          <div class="bar-bg"><div class="bar-fill" style="width:80%"></div></div>
+        </div>
+        <p style="font-size:.75rem; color:var(--muted2); margin-top:.8rem;">* Nivel actual de interés / exposición, no de dominio.</p>
+      </div>
+
+      <div class="about-card">
+        <h3>// Por qué Computación</h3>
+        <p>
+          No hubo un momento eureka ni nada. Desde pequeño sabía quería estar aquí, y con 
+          eso me bastó para empezar. Con el tiempo fui entendiendo por qué: la ciberseguridad 
+          me engancha porque al final es resolver problemas reales que tienen consecuencias 
+          reales. Y la IA me llama la atención porque está cambiando todo lo que creíamos posible.
+        </p>
+        <br>
+        <p>
+          Me veo como una persona reservada, pero apasionado y con hambre de aprender.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- ══════════ PRIMER SEMESTRE ══════════ -->
+  <section id="semester">
+    <div class="section-label">02 — Primer Semestre</div>
+    <h2>Meses de <span>adaptación</span></h2>
+
+    <div class="timeline">
+
+      <div class="tl-item">
+        <div class="tl-dot filled"></div>
+        <div class="tl-category">🎯 Primera impresión</div>
+        <div class="tl-title">El choque con el ritmo universitario</div>
+        <div class="tl-body">
+          La universidad opera a una velocidad diferente al colegio. Las semanas pasan rápido,
+          las tareas se acumulan y la responsabilidad recae completamente sobre uno mismo.
+          No hay nadie recordándote las tareas "tú eres el responsable de administar tu agenda".
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot filled"></div>
+        <div class="tl-category">✨ Lo que me ha motivado</div>
+        <div class="tl-title">Descubrir que los temas me interesan de verdad</div>
+        <div class="tl-body">
+          Más allá de la presión, los cursos de Computación me enganchan.
+          Ver cómo un algoritmo puede resolver un problema real, o entender cómo funciona
+          la lógica detrás de un programa, todo es realmente interesante.
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-category">⚙️ El mayor reto</div>
+        <div class="tl-title">Adaptarme al ritmo académico</div>
+        <div class="tl-body">
+          Mi mayor reto ha sido <strong>organizar el tiempo</strong>.
+          Antes podía salir adelante con estudiar la noche anterior. Aquí eso no funciona.
+          He estado aprendiendo a planificar, priorizar y aceptar que algunas semanas
+          serán difíciles y que eso está bien.
+        </div>
+      </div>
+
+      <div class="tl-item">
+        <div class="tl-dot"></div>
+        <div class="tl-category">💡 Lo que me ha gustado</div>
+        <div class="tl-title">El ambiente y los recursos disponibles</div>
+        <div class="tl-body">
+          La Universidad del Valle proporciona muchas herramientas que son muy nuevas para mí, como <strong>licencias de IA, Canvas, Canva</strong> y entre muchas más que me han ayudado a organizarme mejor. Las conversaciones en clase (y fuera de ella) han ampliado mi perspectiva sobre las oportunidades que representa ser estudiante de tecnología y especialmente de la UVG en Guatemala.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- ══════════ APRENDIZAJES ══════════ -->
+  <section id="learnings">
+    <div class="section-label">03 — Aprendizajes del ciclo</div>
+    <h2>Lo que he <span>construido</span></h2>
+
+    <div class="learnings-grid">
+
+      <!-- Aprendizaje 1: Python / Pensamiento Lógico -->
+      <div class="learning-card">
+        <div class="learning-num">01</div>
+        <div class="learning-topic">Programación · Algoritmos y Prog. Básica</div>
+        <div class="learning-title">Una mejora notable en mi pensamiento lógico</div>
+        <div class="learning-desc">
+          El curso de programación básica me acercó de forma concreta al mundo del código.
+          Variables, ciclos, condicionales, listas y diccionarios dejaron de ser conceptos
+          abstractos para convertirse en herramientas que puedo usar para resolver
+          problemas reales. Cada ejercicio fue un reto de lógica, no solo de sintaxis.
+        </div>
+
+        <div class="evidence-box">
+          <span>🖼️</span>
+          Coloca aquí tu evidencia de Python<br>
+          <code style="font-size:.65rem; color:var(--accent); opacity:.6;">evidencia-python.png</code>
+        </div>
+
+        <div class="bloom-badge">📐 Bloom: Aplicación &amp; Análisis</div>
+
+        <div class="meta-block">
+          <div class="meta-label">🧠 Metacognición</div>
+          <p>
+            Puedo escribir y leer código básico con fluidez, y comprendo bien la estructura
+            de los condicionales y ciclos. Mi área de mejora está en el manejo de errores
+            en tiempo de ejecución y en los condicionales anidados complejos.
+            <strong>Plan:</strong> practicar con ejercicios de mayor complejidad lógica
+            de forma constante, no solo en época de exámenes.
+          </p>
+        </div>
+
+        <div class="skill-meter">
+          <div class="skill-row">
+            <span class="skill-name">Comprensión</span>
+            <div class="dots">
+              <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Aplicación</span>
+            <div class="dots">
+              <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aprendizaje 2: Batería casera / Química -->
+      <div class="learning-card">
+        <div class="learning-num">02</div>
+        <div class="learning-topic">Ciencias · Laboratorio de Química</div>
+        <div class="learning-title">Una batería casera de 6.8 voltios</div>
+        <div class="learning-desc">
+          Junto a mi equipo de laboratorio construimos una batería casera comprendiendo
+          las propiedades coligativas y su relación con la generación de energía.
+          El resultado fue una batería formada por tres celdas en serie: monedas,
+          aluminio y cartón humedecido con vinagre que en conjunto entregaron
+          <strong>6.8 voltios</strong>. Un puente directo entre la teoría química
+          y un resultado medible.
+        </div>
+
+        <div class="evidence-box">
+          <span>🔋</span>
+          Coloca aquí tu evidencia de la batería<br>
+          <code style="font-size:.65rem; color:var(--accent); opacity:.6;">evidencia-bateria.png</code>
+        </div>
+
+        <div class="bloom-badge">🔬 Bloom: Comprensión &amp; Aplicación</div>
+
+        <div class="meta-block">
+          <div class="meta-label">🧠 Metacognición</div>
+          <p>
+            Entendí la relación entre reacción electroquímica y voltaje de forma práctica.
+            El proceso me enseñó que el trabajo en equipo y la precisión en el montaje
+            importan tanto como la teoría. <strong>Para mejorar:</strong> profundizar
+            en la física detrás del fenómeno y experimentar con otros electrolitos.
+          </p>
+        </div>
+
+        <div class="skill-meter">
+          <div class="skill-row">
+            <span class="skill-name">Comprensión</span>
+            <div class="dots">
+              <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Aplicación</span>
+            <div class="dots">
+              <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aprendizaje 3: Métricas Biométricas / Intro Carrera -->
+      <div class="learning-card">
+        <div class="learning-num">03</div>
+        <div class="learning-topic">Investigación · Introducción a la Carrera</div>
+        <div class="learning-title">Métricas biométricas y el NEUROLAB UVG</div>
+        <div class="learning-desc">
+          En el curso de Introducción a la Carrera aprendí a diseñar estudios estructurados
+          para medir cómo un usuario interactúa con un producto o experiencia.
+          El <strong>NEUROLAB UVG</strong> nos permitió registrar métricas biométricas
+          reales: respuesta ocular, atención y reacciones involuntarias ante estímulos.
+          Una herramienta que transforma la intuición en datos concretos.
+        </div>
+
+        <div class="evidence-box">
+          <span>🧪</span>
+          Coloca aquí tu evidencia del NEUROLAB<br>
+          <code style="font-size:.65rem; color:var(--accent); opacity:.6;">evidencia-neurolab.png</code>
+        </div>
+
+        <div class="bloom-badge">📊 Bloom: Análisis &amp; Evaluación</div>
+
+        <div class="meta-block">
+          <div class="meta-label">🧠 Metacognición</div>
+          <p>
+            Comprendí que diseñar un estudio requiere tanto rigor metodológico como
+            claridad sobre qué se quiere medir. La experiencia con el laboratorio me abrió
+            los ojos a la intersección entre tecnología y comportamiento humano.
+            <strong>Para mejorar:</strong> aprender más sobre estadística aplicada
+            para interpretar los datos con mayor profundidad.
+          </p>
+        </div>
+
+        <div class="skill-meter">
+          <div class="skill-row">
+            <span class="skill-name">Comprensión</span>
+            <div class="dots">
+              <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div>
+            </div>
+          </div>
+          <div class="skill-row">
+            <span class="skill-name">Aplicación</span>
+            <div class="dots">
+              <div class="dot on"></div><div class="dot on"></div><div class="dot on"></div><div class="dot"></div><div class="dot"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- ══════════ CIENCIA DE LA COMPUTACIÓN ══════════ -->
+  <section id="cs-conception">
+    <div class="section-label">04 — Mi visión</div>
+    <h2>Ciencia de la <span>Computación</span></h2>
+
+    <div class="cs-card">
+      <h3>// ¿Qué es la ciencia de la computación?</h3>
+      <p>
+        Más que escribir código, la ciencia de la computación es la disciplina de
+        <strong>estructurar el pensamiento para resolver problemas complejos</strong>.
+        Su núcleo no está en los lenguajes de programación ni en las herramientas,
+        sino en la agilidad para diseñar algoritmos eficientes usando razonamiento
+        lógico y matemático. Un científico de la computación no solo programa:
+        analiza, modela, abstrae y encuentra la solución más elegante a un problema
+        que puede tener mil caminos posibles.
+      </p>
+    </div>
+
+    <div class="cs-two-col">
+      <div class="cs-card" style="margin-bottom:0;">
+        <h3>// ¿Qué hace un científico de la computación?</h3>
+        <p>
+          Trabaja en la frontera entre la teoría y la aplicación. Puede diseñar
+          sistemas que detectan fraudes en milisegundos, construir modelos que
+          aprenden de los datos, o encontrar vulnerabilidades antes de que alguien
+          más lo haga. Lo que define al trabajo es la capacidad de
+          <strong>traducir un problema real en un problema computacional</strong>
+          y resolverlo con precisión.
+        </p>
+      </div>
+
+      <div class="vision-block" style="align-self:stretch; display:flex; flex-direction:column; justify-content:center;">
+        <div class="vision-label">🔭 Cómo me veo en este campo</div>
+        <p>
+          En unos años me veo como <strong>especialista en seguridad informática
+          o en inteligencia artificial</strong>, trabajando junto a otros profesionales
+          en busca de un futuro más seguro en el mundo digital. No me atrae un rol
+          pasivo; quiero estar donde las decisiones tienen peso real, donde
+          un error cuesta caro y una buena solución importa.
+        </p>
+      </div>
+    </div>
+
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- ══════════ QUÉ ME LLEVO ══════════ -->
+  <section id="takeaways">
+    <div class="section-label">05 — Balance personal</div>
+    <h2>Qué me llevo de este <span>primer ciclo</span></h2>
+
+    <div class="takeaway-grid">
+
+      <div class="takeaway-card">
+        <div class="takeaway-icon">🤝</div>
+        <div class="takeaway-title">Personas que valen la pena</div>
+        <div class="takeaway-desc">
+          Mantengo intacta la ambición por la carrera, y a eso le sumo algo que no esperaba
+          con tanta intensidad: <strong>conocer a gente realmente buena</strong>.
+          El esfuerzo de comunicarse con la mayor cantidad de personas posible
+          terminó dando frutos. Clubs como fotografía e inversiones me conectaron con
+          personas que comparten mis intereses, y eso hace que la experiencia
+          universitaria sea genuinamente disfrutable.
+        </div>
+      </div>
+
+      <div class="takeaway-card">
+        <div class="takeaway-icon">📅</div>
+        <div class="takeaway-title">La responsabilidad como hábito</div>
+        <div class="takeaway-desc">
+          Si hay algo que este semestre me enseñó a la fuerza es que
+          <strong>la responsabilidad no es opcional</strong>. Dejar tareas para
+          el último momento tiene un costo real aquí. Estoy construyendo el hábito
+          de planificar con anticipación, no como una regla externa,
+          sino como una decisión que me conviene a mí.
+        </div>
+      </div>
+
+      <div class="takeaway-card">
+        <div class="takeaway-icon">🧭</div>
+        <div class="takeaway-title">Claridad sobre el futuro</div>
+        <div class="takeaway-desc">
+          Entré con una dirección vaga. Salgo del primer ciclo con objetivos
+          más definidos: <strong>ciberseguridad e IA</strong> siguen siendo el norte,
+          pero ahora entiendo mejor qué implica llegar ahí y qué tengo que
+          desarrollar para hacerlo posible.
+        </div>
+      </div>
+
+      <div class="takeaway-card">
+        <div class="takeaway-icon">⚡</div>
+        <div class="takeaway-title">Completar las horas beca</div>
+        <div class="takeaway-desc">
+          Al inicio me parecía una carga demasiado grande. Pero haberlas completado
+          me genera una <strong>tranquilidad real</strong>. Fue una prueba de que
+          puedo comprometer tiempo y esfuerzo a algo cuando me lo propongo,
+          aunque al principio el camino parezca largo.
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <div class="full-divider"></div>
+
+  <!-- ══════════ REFLEXIÓN ══════════ -->
+  <section id="reflexion">
+    <div class="section-label">06 — Metacognición final</div>
+    <h2>Reflexión del <span>ciclo</span></h2>
+
+    <div class="reflex-grid">
+
+      <div class="reflex-card bien">
+        <div class="reflex-icon">✅</div>
+        <h3>// ¿Qué salió bien?</h3>
+        <p>
+          Logré cumplir mi objetivo de <strong>horas beca</strong>. Al principio lo veía
+          como algo casi imposible por la cantidad comprometida, pero haberlo completado
+          me da una confianza distinta. También salió bien el contacto con las personas:
+          me costó al principio, pero terminé construyendo relaciones que importan.
+        </p>
+      </div>
+
+      <div class="reflex-card no-bien">
+        <div class="reflex-icon">⚠️</div>
+        <h3>// ¿Qué no salió tan bien?</h3>
+        <p>
+          La <strong>procrastinación</strong> fue mi mayor obstáculo. Arrastré la mala
+          costumbre de dejar tareas a última hora desde el colegio, y aquí el costo
+          fue mayor. No es solo una cuestión de notas, es una cuestión de hábito
+          y de respeto hacia mi propio tiempo.
+        </p>
+      </div>
+
+      <div class="reflex-card aprendido">
+        <div class="reflex-icon">📚</div>
+        <h3>// ¿Qué has aprendido?</h3>
+        <p>
+          Aprendí que las <strong>amistades importan</strong> mucho más de lo que creía
+          en un entorno universitario. Y que <strong>responsabilidad</strong> no es una
+          palabra vacía: es la diferencia entre un semestre que se siente fuera de control
+          y uno en el que tú decides el ritmo.
+        </p>
+      </div>
+
+      <div class="reflex-card dudas">
+        <div class="reflex-icon">🤔</div>
+        <h3>// ¿Qué te deja con dudas?</h3>
+        <p>
+          Me queda la pregunta de qué hubiera pasado si mi proceso de adaptación
+          hubiese sido más rápido. ¿Habrían mejorado mis notas? ¿Habría construido
+          más relaciones? No es arrepentimiento, sino una pregunta que me sirve
+          de <strong>combustible para el siguiente ciclo</strong>.
+        </p>
+      </div>
+
+    </div>
+
+    <div class="closing-block">
+      <p>
+        El primer semestre fue un espejo. Me mostró mis límites, pero también
+        confirmó que estoy en el lugar correcto. La carrera me engancha,
+        las personas me motivan y los retos me recuerdan por qué empecé.
+        <strong>El segundo ciclo empieza desde un lugar más consciente.</strong>
+      </p>
+      <div class="bloom-badge" style="margin-top:1rem;">
+        🎓 Bloom: Evaluación &amp; Síntesis — nivel alcanzado en este ciclo
+      </div>
+    </div>
+
+  </section>
+
+  <div class="full-divider"></div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div>
+    <span>David Maximiliano Pablo Cuy</span> · UVG Guatemala · 2026
+  </div>
+  <div style="display:flex; gap:1.5rem;">
+    <a href="https://www.instagram.com/davidx_18_?igsh=MXNrbm12djQ2eDgwZw==" target="_blank" style="color:var(--muted); text-decoration:none; transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">Instagram</a>
+    <a href="https://www.facebook.com/share/18AV8FmGiv/" target="_blank" style="color:var(--muted); text-decoration:none; transition:color .2s;" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">Facebook</a>
+  </div>
+</footer>
+
+<script>
+  // Intersection Observer para animaciones al hacer scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.about-card, .learning-card, .cs-card, .takeaway-card, .reflex-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity .5s ease, transform .5s ease, border-color .3s, box-shadow .3s';
+    observer.observe(el);
+  });
+
+  // Highlight nav link activo
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('nav ul a');
+  window.addEventListener('scroll', () => {
+    let current = '';
+    sections.forEach(s => {
+      if (window.scrollY >= s.offsetTop - 120) current = s.getAttribute('id');
+    });
+    navLinks.forEach(a => {
+      a.style.color = a.getAttribute('href') === '#' + current ? 'var(--accent)' : '';
+    });
+  });
+</script>
+</body>
+</html>
